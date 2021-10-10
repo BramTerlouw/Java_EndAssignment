@@ -11,8 +11,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import nl.inholland.javafx.Database.Database;
 import nl.inholland.javafx.Model.Theater.Showing;
+import nl.inholland.javafx.View.Form.BaseForm;
+import nl.inholland.javafx.View.Form.ManageMovieForm;
+import nl.inholland.javafx.View.Form.ManageShowingForm;
+import nl.inholland.javafx.View.Form.PurchaseTicketForm;
 import nl.inholland.javafx.View.Stage.Login;
 import nl.inholland.javafx.View.Stage.Main;
+
+import java.awt.event.MouseEvent;
 
 public class MainScene {
     private final Main main;
@@ -21,14 +27,12 @@ public class MainScene {
 
     private final VBox layout;
     private final VBox layoutContainer;
-    private TableView roomOne;
-    private TableView roomTwo;
 
     public MainScene(Main mainWindow) {
         this.main = mainWindow;
         this.db = new Database();
 
-        this.layoutContainer = new VBox(createSceneHeader("Purchase tickets"), createShowingDisplay(), createFormContainer(), createFooter());
+        this.layoutContainer = new VBox(createSceneHeader("Purchase tickets"), createShowingDisplay(), new BaseForm().getForm(), createFooter());
         this.layoutContainer.setPadding(new Insets(10, 10, 10, 10));
         this.layoutContainer.setAlignment(Pos.CENTER);
         this.layoutContainer.setSpacing(10);
@@ -47,8 +51,12 @@ public class MainScene {
 
         Menu adminMenu = new Menu("Admin");
         MenuItem manageShowingsItem = new MenuItem("Manage showings");
-        MenuItem ManageMoviesItem = new MenuItem("Manage movies");
-        adminMenu.getItems().addAll(manageShowingsItem, ManageMoviesItem);
+        manageShowingsItem.setOnAction(actionEvent -> layoutContainer.getChildren().set(2,
+                new ManageShowingForm().getForm()));
+        MenuItem manageMoviesItem = new MenuItem("Manage movies");
+        manageMoviesItem.setOnAction(actionEvent -> layoutContainer.getChildren().set(2,
+                new ManageMovieForm().getForm()));
+        adminMenu.getItems().addAll(manageShowingsItem, manageMoviesItem);
 
         Menu helpMenu = new Menu("Help");
         MenuItem aboutItem = new MenuItem("About");
@@ -110,6 +118,8 @@ public class MainScene {
         displayTable.setMinWidth(585);
         this.createTableColumns(displayTable);
         this.fillTable(displayTable, room);
+        displayTable.setOnMouseClicked(mouseEvent -> layoutContainer.getChildren().set(2,
+                new PurchaseTicketForm((Showing) displayTable.getSelectionModel().getSelectedItem()).getForm()));
 
         return displayTable;
     }
@@ -146,8 +156,9 @@ public class MainScene {
 
 
 
+
     // create form gridPane
-    private GridPane createFormContainer(){
+    private GridPane createEmptyForm(){
         GridPane formGrid = new GridPane();
         formGrid.setMinHeight(180);
         formGrid.setMinWidth(1200);
@@ -170,8 +181,7 @@ public class MainScene {
         pane.setMaxWidth(1200);
         pane.setStyle(
                 "-fx-border-style: solid inside;" +
-                        "-fx-border-width: 1;" +
-                        "-fx-border-color: blue;");
+                        "-fx-background-color: Orange;");
         return pane;
     }
 
