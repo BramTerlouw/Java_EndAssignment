@@ -1,6 +1,9 @@
 package nl.inholland.javafx.Model.Person;
 
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.Year;
+import java.time.temporal.ChronoUnit;
 
 public abstract class Person {
     private int id;
@@ -12,13 +15,13 @@ public abstract class Person {
     private String email;
     private String password;
 
-    public Person(int id, String userName, String firstName, String lastName, LocalDate birthday, int age, String email, String password) {
+    public Person(int id, String userName, String firstName, String lastName, LocalDate birthday, String email, String password) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
-        this.age = age;
+        this.age = (int) ChronoUnit.YEARS.between(birthday, LocalDate.now());
         this.email = email;
         this.password = password;
     }

@@ -3,7 +3,7 @@ package nl.inholland.javafx.Model.Theater;
 import java.time.LocalDateTime;
 
 public class Showing {
-    private Movie movie;
+    private String movieTitle;
     private Room room;
     private int nrOfSeats;
     private LocalDateTime startMovie;
@@ -11,7 +11,7 @@ public class Showing {
     private double price;
 
     public Showing(Movie movie, Room room, LocalDateTime startMovie) {
-        this.movie = movie;
+        this.movieTitle = movie.getName();
         this.room = room;
         this.nrOfSeats = room.getNrOfSeats();
         this.startMovie = startMovie;
@@ -20,39 +20,51 @@ public class Showing {
         this.price = movie.getTicketPrice();
     }
 
-    public Movie getMovie() {
-        return movie;
+    public String getMovieTitle() {
+        return movieTitle;
+    }
+
+    public void setMovieTitle(String movieTitle) {
+        this.movieTitle = movieTitle;
     }
 
     public Room getRoom() {
         return room;
     }
 
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
     public int getNrOfSeats() {
         return nrOfSeats;
+    }
+
+    public void setNrOfSeats(int nrOfSeats) {
+        this.nrOfSeats = nrOfSeats;
     }
 
     public LocalDateTime getStartMovie() {
         return startMovie;
     }
 
+    public void setStartMovie(LocalDateTime startMovie) {
+        this.startMovie = startMovie;
+    }
+
     public LocalDateTime getEndMovie() {
         return endMovie;
+    }
+
+    public void setEndMovie(LocalDateTime endMovie) {
+        this.endMovie = endMovie;
     }
 
     public double getPrice() {
         return price;
     }
 
-    public void setMovie(Movie movie) {
-        this.movie = movie;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
-    }
-
-    public void setStartMovie(LocalDateTime startMovie) {
-        this.startMovie = startMovie;
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

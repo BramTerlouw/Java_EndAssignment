@@ -53,7 +53,7 @@ public class LoginScene {
 
     private void handleLogin(){
         User temporary = new User(1, "test", "test", "test",
-                LocalDate.of(2000, 02, 18), 21, "test", "test");
+                LocalDate.of(2000, 02, 18), "test", "test");
         new Main(temporary).getWindow().show();
         this.login.close();
     }
