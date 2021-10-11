@@ -1,6 +1,5 @@
 package nl.inholland.javafx.Model.Theater;
 
-import java.time.LocalTime;
 
 public class Movie {
     private String name;

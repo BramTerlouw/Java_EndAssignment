@@ -4,6 +4,7 @@ import javafx.scene.control.*;
 import nl.inholland.javafx.Database.Database;
 import nl.inholland.javafx.Model.Theater.Movie;
 import nl.inholland.javafx.Model.Theater.Room;
+import nl.inholland.javafx.Model.Theater.Showing;
 import nl.inholland.javafx.View.Scene.MainScene;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,6 +21,7 @@ public class ManageShowingForm extends BaseForm{
     Label lblPriceAnswer;
 
     Movie movie;
+    Room room;
 
     public ManageShowingForm(MainScene main, Database db) {
         super(main, db);
@@ -27,18 +29,13 @@ public class ManageShowingForm extends BaseForm{
     }
 
     public void createManageShowingForm(){
-        // labels values are set by listeners of the comboBoxes
+        // labels for nr of seats, ticket price and end date (value set with listeners)
         lblNrOfSeatsAnswer = new Label();
         lblPriceAnswer = new Label();
         lblEndAnswer = new Label();
 
 
-
-
-
-
-
-        // datepicker and text field for the start of the move
+        // datepicker and text field for the start of the movie
         dpStart = new DatePicker();
         dpStart.setValue(LocalDate.now());
 
@@ -46,18 +43,7 @@ public class ManageShowingForm extends BaseForm{
         txtTime.setText("20:00");
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+        // combo boxes for all movies and rooms
         cbMovies = new ComboBox<>();
         cbRooms = new ComboBox<>();
         for (Movie m: db.getMovies()) { cbMovies.getItems().add(m.getName()); }
@@ -73,7 +59,10 @@ public class ManageShowingForm extends BaseForm{
         });
         cbRooms.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
             db.getRooms().stream().filter(room -> cbRooms.getValue().equalsIgnoreCase(room.getName())).findAny()
-                    .ifPresent(r -> lblNrOfSeatsAnswer.setText(String.valueOf(r.getNrOfSeats())));
+                    .ifPresent(r -> {
+                        lblNrOfSeatsAnswer.setText(String.valueOf(r.getNrOfSeats()));
+                        room = r;
+                    });
 
         });
         txtTime.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -87,24 +76,11 @@ public class ManageShowingForm extends BaseForm{
         cbRooms.getSelectionModel().selectFirst();
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         // buttons for adding a showing and clearing the form
         Button btnAdd = new Button("Add Showing");
         Button btnClear = new Button("Clear");
         btnClear.setOnAction(actionEvent -> handleClear());
-        //btnAdd.setOnAction(actionEvent -> handleAdd());
+        btnAdd.setOnAction(actionEvent -> handleAdd());
 
         form.add(new Label("Movie title:"), 0, 0);
         form.add(new Label("Room:"), 0, 1);
@@ -124,30 +100,20 @@ public class ManageShowingForm extends BaseForm{
         form.add(btnClear, 1, 4);
     }
 
+
     private void handleClear(){
         this.main.setForm(new BaseForm(main, db).getForm());
     }
 
-//    private void handleAdd(){
-//        String movieTitle = cbMovies.getValue();
-//        String room = cbRooms.getValue();
-//        int nrOfSeats = Integer.parseInt(lblNrOfSeatsAnswer.getText());
-//        LocalDateTime startMovie = this.validateDateTimeInput();
-//
-//
-//        LocalDateTime endMovie = startMovie.plusHours(cbMovies.getValue().getDurationHours());
-//        endMovie = endMovie.plusMinutes(cbMovies.getValue().getDurationMinutes());
-//        String price = String.valueOf(cbMovies.getValue().getTicketPrice());
-//
-//        System.out.println(movieTitle);
-//        System.out.println(room);
-//        System.out.println(nrOfSeats);
-//        System.out.println(startMovie);
-//        System.out.println(endMovie);
-//        System.out.println(price);
-//    }
 
-    private LocalDateTime getStartMove(){
+    private void handleAdd(){
+        db.insertShowing(new Showing(this.movie, this.room, this.getStartMovie()));
+        main.refreshShowing();
+        this.main.setForm(new BaseForm(main, db).getForm());
+    }
+
+
+    private LocalDateTime getStartMovie(){
         LocalDate startDateMovie = dpStart.getValue();
 
         String[] splitInput = txtTime.getText().split(":");
@@ -155,14 +121,16 @@ public class ManageShowingForm extends BaseForm{
         return LocalDateTime.of(startDateMovie, startTimeMovie);
     }
 
-    private String calculateEndMovie(LocalDateTime movieDate, long hours, long minutes){
+
+    private String getEndMovie(LocalDateTime movieDate, long hours, long minutes){
         LocalDateTime end = movieDate.plusHours(hours);
         end = end.plusMinutes(minutes);
         return end.toString();
     }
 
+
     private void endDateListenEvent(){
         if (txtTime.getText().matches("\\d{2}:\\d{2}"))
-            lblEndAnswer.setText(this.calculateEndMovie(this.getStartMove(), movie.getDurationHours(), movie.getDurationMinutes()));
+            lblEndAnswer.setText(this.getEndMovie(this.getStartMovie(), movie.getDurationHours(), movie.getDurationMinutes()));
     }
 }

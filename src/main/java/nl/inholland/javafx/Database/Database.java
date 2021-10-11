@@ -30,6 +30,14 @@ public class Database {
         }
     }
 
+    public void insertShowing(Showing showing){
+        showings.add(showing);
+    }
+
+    public void insertMovie(Movie movie){
+        movies.add(movie);
+    }
+
     public List<Person> getUsers() {
         return users;
     }

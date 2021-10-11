@@ -11,29 +11,36 @@ import nl.inholland.javafx.View.Scene.MainScene;
 
 public class ManageMovieForm extends BaseForm{
 
+    private TextField txtMovie;
+    private TextField txtPrice;
+    private TextField txtHours;
+    private TextField txtMinutes;
+
     public ManageMovieForm(MainScene main, Database db) {
         super(main, db);
         createManageMoviesForm();
     }
 
     private void createManageMoviesForm(){
-        TextField txtmovie = new TextField();
-        txtmovie.setPromptText("Movie title...");
-        TextField txtPrice = new TextField();
+        txtMovie = new TextField();
+        txtMovie.setPromptText("Movie title...");
+        txtPrice = new TextField();
         txtPrice.setPromptText("Price...");
-        TextField txtHours = new TextField();
+        txtHours = new TextField();
         txtHours.setPromptText("Hours...");
-        TextField txtMinutes = new TextField();
+        txtMinutes = new TextField();
         txtMinutes.setPromptText("Minutes...");
 
         Button btnAdd = new Button("Add movie");
         Button btnClear = new Button("Clear");
+        btnClear.setOnAction(actionEvent -> handleClear());
+        btnAdd.setOnAction(actionEvent -> handleAdd());
 
         form.add(new Label("Movie title:"), 0, 0);
         form.add(new Label("Price:"), 0, 1);
         form.add(new Label("Duration:"), 0, 2);
 
-        form.add(txtmovie, 1, 0);
+        form.add(txtMovie, 1, 0);
         form.add(txtPrice, 1, 1);
         form.add(txtHours, 1, 2);
         form.add(txtMinutes, 2, 2);
@@ -41,6 +48,17 @@ public class ManageMovieForm extends BaseForm{
         form.add(btnClear, 1, 4);
         form.add(createMovieList(), 3, 0, 1, 3);
     }
+
+    private void handleClear(){
+        this.main.setForm(new BaseForm(main, db).getForm());
+    }
+
+    private void handleAdd(){
+        db.insertMovie(new Movie(txtMovie.getText(), Double.parseDouble(txtPrice.getText()),
+                Long.parseLong(txtHours.getText()), Long.parseLong(txtMinutes.getText())));
+        this.main.setForm(new BaseForm(main, db).getForm());
+    }
+
 
     private TableView createMovieList(){
         TableView movies = new TableView();
