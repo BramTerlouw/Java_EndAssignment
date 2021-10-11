@@ -14,11 +14,6 @@ public class PurchaseTicketForm extends BaseForm{
 
     public PurchaseTicketForm(MainScene main, Database db, Showing showing) {
         super(main, db);
-        createPurchaseForm(showing);
-    }
-
-    public void createPurchaseForm(Showing showing){
-        // Form items
         if (showing != null) {
             Label lblRoomAnswer = new Label(showing.getRoom().getName());
             Label lblStartAnswer = new Label(showing.getStartMovie().toString());
@@ -54,7 +49,7 @@ public class PurchaseTicketForm extends BaseForm{
     }
 
     private void handleClear(){
-        this.main.setForm(new BaseForm(main, db).getForm());
+        this.main.setForm(new BaseForm(main, db).getForm(), "Purchase tickets");
     }
 
     private void handlePurchase(Showing showing, ComboBox cbNrOfSeats, TextField txtName){
@@ -66,7 +61,7 @@ public class PurchaseTicketForm extends BaseForm{
             if (this.validatePurchase(showing, nrOfSeatsChosen)){
                 this.db.reduceSeats(showing, nrOfSeatsChosen);
                 main.refreshShowing();
-                this.main.setForm(new BaseForm(main, db).getForm());
+                this.main.setForm(new BaseForm(main, db).getForm(), "Purchase tickets");
             }
         }
     }

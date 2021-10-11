@@ -18,10 +18,6 @@ public class ManageMovieForm extends BaseForm{
 
     public ManageMovieForm(MainScene main, Database db) {
         super(main, db);
-        createManageMoviesForm();
-    }
-
-    private void createManageMoviesForm(){
         txtMovie = new TextField();
         txtMovie.setPromptText("Movie title...");
         txtPrice = new TextField();
@@ -50,13 +46,13 @@ public class ManageMovieForm extends BaseForm{
     }
 
     private void handleClear(){
-        this.main.setForm(new BaseForm(main, db).getForm());
+        this.main.setForm(new BaseForm(main, db).getForm(), "Purchase tickets");
     }
 
     private void handleAdd(){
         db.insertMovie(new Movie(txtMovie.getText(), Double.parseDouble(txtPrice.getText()),
                 Long.parseLong(txtHours.getText()), Long.parseLong(txtMinutes.getText())));
-        this.main.setForm(new BaseForm(main, db).getForm());
+        this.main.setForm(new BaseForm(main, db).getForm(), "Purchase tickets");
     }
 
 

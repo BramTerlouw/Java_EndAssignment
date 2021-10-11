@@ -34,15 +34,15 @@ public class MainScene {
         this.main = mainWindow;
         this.db = new Database();
 
-        this.layoutContainer = new VBox(createSceneHeader("Purchase tickets"), createShowingDisplay(), new BaseForm(this, db).getForm(), createFooter());
+        this.layoutContainer = new VBox(createSceneHeader("Purchase tickets"), createShowingDisplay(),
+                new BaseForm(this, db).getForm(), createFooter());
         this.layoutContainer.setPadding(new Insets(10, 10, 10, 10));
         this.layoutContainer.setAlignment(Pos.CENTER);
         this.layoutContainer.setSpacing(10);
 
         this.layout = new VBox(createNavBar(), layoutContainer);
-
         this.mainScene = new Scene(this.layout);
-        mainWindow.setStageTitle("Purchase tickets");
+        main.setStageTitle("Purchase tickets");
     }
 
 
@@ -53,9 +53,9 @@ public class MainScene {
 
         Menu adminMenu = new Menu("Admin");
         MenuItem manageShowingsItem = new MenuItem("Manage showings");
-        manageShowingsItem.setOnAction(actionEvent -> this.setForm(new ManageShowingForm(this, db).getForm()));
+        manageShowingsItem.setOnAction(actionEvent -> this.setForm(new ManageShowingForm(this, db).getForm(), "Manage Showings"));
         MenuItem manageMoviesItem = new MenuItem("Manage movies");
-        manageMoviesItem.setOnAction(actionEvent -> this.setForm(new ManageMovieForm(this, db).getForm()));
+        manageMoviesItem.setOnAction(actionEvent -> this.setForm(new ManageMovieForm(this, db).getForm(), "Manage Movies"));
         adminMenu.getItems().addAll(manageShowingsItem, manageMoviesItem);
 
         Menu helpMenu = new Menu("Help");
@@ -122,7 +122,7 @@ public class MainScene {
         this.createTableColumns(displayTable);
         this.fillTable(displayTable, room);
         displayTable.setOnMouseClicked(mouseEvent -> this.setForm(new PurchaseTicketForm(this, db, (Showing)
-                displayTable.getSelectionModel().getSelectedItem()).getForm()));
+                displayTable.getSelectionModel().getSelectedItem()).getForm(), "Purchase tickets"));
 
         return displayTable;
     }
@@ -159,23 +159,6 @@ public class MainScene {
 
 
 
-
-    // create form gridPane
-    private GridPane createEmptyForm(){
-        GridPane formGrid = new GridPane();
-        formGrid.setMinHeight(180);
-        formGrid.setMinWidth(1200);
-        formGrid.setMaxWidth(1200);
-        formGrid.setStyle(
-                "-fx-border-style: solid inside;" +
-                        "-fx-border-width: 1;" +
-                        "-fx-border-color: blue;");
-        return formGrid;
-    }
-
-
-
-
     // Create scene footer
     private Pane createFooter(){
         Pane pane = new Pane();
@@ -190,20 +173,13 @@ public class MainScene {
 
 
 
-    // set form on main scene
-    public void setForm(GridPane form){
-        layoutContainer.getChildren().set(2, form);
-    }
-
-
-
     // Login function
     private void logOut(){
         new Login().getWindow().show();
         this.main.getWindow().close();
     }
 
-
+    // refresh the tableviews
     public void refreshShowing(){
         roomOne.getItems().clear();
         roomTwo.getItems().clear();
@@ -216,5 +192,10 @@ public class MainScene {
     // -- Return the main scene
     public Scene getMainScene() {
         return mainScene;
+    }
+    // set form on main scene
+    public void setForm(GridPane form, String windowMessage){
+        layoutContainer.getChildren().set(2, form);
+        main.setStageTitle(windowMessage);
     }
 }

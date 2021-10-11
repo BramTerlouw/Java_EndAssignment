@@ -1,13 +1,10 @@
-# Java Endassignment
+# Java End assignment
 
 [To Do]:
 - user permissions
 - Login
-- Crud
-- Verification
-- Errorhandling
+- Error handling / verification
 - styling
-- Showing room -> room name
 
 [Done]:
 - Login structure
@@ -15,6 +12,7 @@
 - produce initial data
 - fill table view
 - Make forms
+- form functionalities
 
 
 

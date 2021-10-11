@@ -22,6 +22,8 @@ public class Database {
         showings = data.createShowings(movies, rooms);
     }
 
+
+    // methods for modifying data
     public void reduceSeats(Showing showing, int nrOfSeats){
         for (Showing s:showings) {
             if (Objects.equals(s, showing)) {
@@ -29,28 +31,17 @@ public class Database {
             }
         }
     }
-
     public void insertShowing(Showing showing){
         showings.add(showing);
     }
-
     public void insertMovie(Movie movie){
         movies.add(movie);
     }
 
-    public List<Person> getUsers() {
-        return users;
-    }
 
-    public List<Movie> getMovies() {
-        return movies;
-    }
-
-    public List<Room> getRooms() {
-        return rooms;
-    }
-
-    public List<Showing> getShowings() {
-        return showings;
-    }
+    // getters
+    public List<Person> getUsers() { return users; }
+    public List<Movie> getMovies() { return movies; }
+    public List<Room> getRooms() {return rooms; }
+    public List<Showing> getShowings() {return showings; }
 }

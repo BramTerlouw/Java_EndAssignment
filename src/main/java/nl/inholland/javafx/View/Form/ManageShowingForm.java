@@ -9,6 +9,7 @@ import nl.inholland.javafx.View.Scene.MainScene;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 public class ManageShowingForm extends BaseForm{
 
@@ -25,10 +26,7 @@ public class ManageShowingForm extends BaseForm{
 
     public ManageShowingForm(MainScene main, Database db) {
         super(main, db);
-        createManageShowingForm();
-    }
 
-    public void createManageShowingForm(){
         // labels for nr of seats, ticket price and end date (value set with listeners)
         lblNrOfSeatsAnswer = new Label();
         lblPriceAnswer = new Label();
@@ -101,16 +99,24 @@ public class ManageShowingForm extends BaseForm{
     }
 
 
-    private void handleClear(){
-        this.main.setForm(new BaseForm(main, db).getForm());
-    }
 
+
+
+    private void handleClear(){
+        this.main.setForm(new BaseForm(main, db).getForm(), "Purchase tickets");
+    }
 
     private void handleAdd(){
-        db.insertShowing(new Showing(this.movie, this.room, this.getStartMovie()));
-        main.refreshShowing();
-        this.main.setForm(new BaseForm(main, db).getForm());
+        if (validateNewShowingDateTime()) {
+            db.insertShowing(new Showing(this.movie, this.room, this.getStartMovie()));
+            main.refreshShowing();
+            this.main.setForm(new BaseForm(main, db).getForm(), "Purchase tickets");
+        }
     }
+
+
+
+
 
 
     private LocalDateTime getStartMovie(){
@@ -132,5 +138,32 @@ public class ManageShowingForm extends BaseForm{
     private void endDateListenEvent(){
         if (txtTime.getText().matches("\\d{2}:\\d{2}"))
             lblEndAnswer.setText(this.getEndMovie(this.getStartMovie(), movie.getDurationHours(), movie.getDurationMinutes()));
+    }
+
+
+
+    // Validate the datetime of new and planned showings
+    private boolean validateNewShowingDateTime(){
+        List<Showing> showings = db.getShowings();
+        for (Showing showing:showings) {
+            if (showing.getRoom().equals(room))
+                if (isOverlapping(
+                        getStartMovie(),                            // start new showing
+                        LocalDateTime.parse(lblEndAnswer.getText()),// end new showing
+                        showing.getStartMovie().minusMinutes(15),   // start planned showing minus 15 min
+                        showing.getEndMovie().plusMinutes(15)))     // end planned showing plus 15 min
+                {
+                    return false;
+                }
+        }
+        System.out.println("does not overlap");
+        return true;
+    }
+
+    // if showings overlap, return true
+    private boolean isOverlapping(LocalDateTime startNewShowing, LocalDateTime endNewShowing,
+                                  LocalDateTime startOldShowing, LocalDateTime endOldShowing){
+        // return true if start new showing not after end old showing && start old showing not after end new showing
+        return !startNewShowing.isAfter(endOldShowing) && !startOldShowing.isAfter(endNewShowing);
     }
 }
