@@ -9,6 +9,8 @@ import nl.inholland.javafx.Model.Theater.Movie;
 import nl.inholland.javafx.Model.Theater.Showing;
 import nl.inholland.javafx.View.Scene.MainScene;
 
+import java.util.regex.Pattern;
+
 public class ManageMovieForm extends BaseForm{
 
     private TextField txtMovie;
@@ -50,9 +52,38 @@ public class ManageMovieForm extends BaseForm{
     }
 
     private void handleAdd(){
-        db.insertMovie(new Movie(txtMovie.getText(), Double.parseDouble(txtPrice.getText()),
-                Long.parseLong(txtHours.getText()), Long.parseLong(txtMinutes.getText())));
-        this.main.setForm(new BaseForm(main, db).getForm(), "Purchase tickets");
+        if (validateUserInput() && validateUserRegex()) {
+            db.insertMovie(new Movie(txtMovie.getText(), Double.parseDouble(txtPrice.getText()),
+                    Long.parseLong(txtHours.getText()), Long.parseLong(txtMinutes.getText())));
+            this.main.setForm(new BaseForm(main, db).getForm(), "Purchase tickets");
+        }
+    }
+
+    private boolean validateUserRegex(){
+        String decimalPattern = "([0-9]*)\\.([0-9]*)";
+        if (!Pattern.matches(decimalPattern, txtPrice.getText())){
+            showErrorMessage("Wrong value for price!");
+            return false;
+        }
+        else if (!txtHours.getText().matches("[0-9]*")){
+            showErrorMessage("Wrong value for hours!");
+            return false;
+        }
+        else if (!txtMinutes.getText().matches("[0-9]*") || Integer.parseInt(txtMinutes.getText()) > 59){
+            showErrorMessage("Wrong value for minutes!");
+            return false;
+        }
+        else
+            return true;
+    }
+
+    private boolean validateUserInput(){
+        if (txtMovie.getText().isEmpty() || txtPrice.getText().isEmpty() || txtHours.getText().isEmpty() ||
+                txtMinutes.getText().isEmpty()){
+            showErrorMessage("Not all fields are filled!");
+            return false;
+        }
+        return true;
     }
 
 

@@ -5,6 +5,8 @@ import javafx.scene.layout.GridPane;
 import nl.inholland.javafx.Database.Database;
 import nl.inholland.javafx.View.Scene.MainScene;
 
+import javax.swing.*;
+
 public class BaseForm {
 
     protected GridPane form;
@@ -30,6 +32,13 @@ public class BaseForm {
                         "-fx-border-width: 1;" +
                         "-fx-border-color: blue;");
         return form;
+    }
+
+    protected void showErrorMessage(String message){
+        JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    protected void showConfirmationMessage(String message, String title){
+        JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
     public GridPane getForm() {

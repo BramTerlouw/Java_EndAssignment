@@ -107,8 +107,9 @@ public class ManageShowingForm extends BaseForm{
     }
 
     private void handleAdd(){
-        if (validateNewShowingDateTime()) {
+        if (validateInputRegex(true) && validateNewShowingDateTime()) {
             db.insertShowing(new Showing(this.movie, this.room, this.getStartMovie()));
+            showConfirmationMessage("Confirmation new showing.", "The new showing is added to the agenda!");
             main.refreshShowing();
             this.main.setForm(new BaseForm(main, db).getForm(), "Purchase tickets");
         }
@@ -127,7 +128,6 @@ public class ManageShowingForm extends BaseForm{
         return LocalDateTime.of(startDateMovie, startTimeMovie);
     }
 
-
     private String getEndMovie(LocalDateTime movieDate, long hours, long minutes){
         LocalDateTime end = movieDate.plusHours(hours);
         end = end.plusMinutes(minutes);
@@ -135,10 +135,15 @@ public class ManageShowingForm extends BaseForm{
     }
 
 
+
+
+    // method is called in the listener
     private void endDateListenEvent(){
-        if (txtTime.getText().matches("\\d{2}:\\d{2}"))
+        if (validateInputRegex(false))
             lblEndAnswer.setText(this.getEndMovie(this.getStartMovie(), movie.getDurationHours(), movie.getDurationMinutes()));
     }
+
+
 
 
 
@@ -153,10 +158,10 @@ public class ManageShowingForm extends BaseForm{
                         showing.getStartMovie().minusMinutes(15),   // start planned showing minus 15 min
                         showing.getEndMovie().plusMinutes(15)))     // end planned showing plus 15 min
                 {
+                    showErrorMessage("New showing is overlapping with another showing!");
                     return false;
                 }
         }
-        System.out.println("does not overlap");
         return true;
     }
 
@@ -165,5 +170,21 @@ public class ManageShowingForm extends BaseForm{
                                   LocalDateTime startOldShowing, LocalDateTime endOldShowing){
         // return true if start new showing not after end old showing && start old showing not after end new showing
         return !startNewShowing.isAfter(endOldShowing) && !startOldShowing.isAfter(endNewShowing);
+    }
+
+    private boolean validateInputRegex(boolean showError){
+        if (!txtTime.getText().matches("\\d{2}:\\d{2}")){
+            if (showError)
+                showErrorMessage("Make sure you use the correct time format! (hh:mm)");
+            return false;
+        }
+
+        String[] startTime = txtTime.getText().split(":");
+        if (Integer.parseInt(startTime[0]) > 23 || Integer.parseInt(startTime[1]) > 59){
+            if (showError)
+                showErrorMessage("Make sure you use correct values for hours (00 - 23) and minutes (00 - 59)");
+            return false;
+        }
+        return true;
     }
 }

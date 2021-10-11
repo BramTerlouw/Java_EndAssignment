@@ -3,7 +3,6 @@
 [To Do]:
 - user permissions
 - Login
-- Error handling / verification
 - styling
 
 [Done]:
@@ -13,6 +12,7 @@
 - fill table view
 - Make forms
 - form functionalities
+- Error handling / verification
 
 
 
