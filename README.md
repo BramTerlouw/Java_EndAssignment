@@ -7,6 +7,7 @@
 - Verification
 - Errorhandling
 - styling
+- Showing room -> room name
 
 [Done]:
 - Login structure

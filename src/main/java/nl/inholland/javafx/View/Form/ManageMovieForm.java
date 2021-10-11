@@ -7,10 +7,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import nl.inholland.javafx.Database.Database;
 import nl.inholland.javafx.Model.Theater.Movie;
 import nl.inholland.javafx.Model.Theater.Showing;
+import nl.inholland.javafx.View.Scene.MainScene;
 
 public class ManageMovieForm extends BaseForm{
 
-    public ManageMovieForm() {
+    public ManageMovieForm(MainScene main, Database db) {
+        super(main, db);
         createManageMoviesForm();
     }
 

@@ -5,6 +5,7 @@ import nl.inholland.javafx.Model.Theater.Movie;
 import nl.inholland.javafx.Model.Theater.Room;
 import nl.inholland.javafx.Model.Theater.Showing;
 import java.util.List;
+import java.util.Objects;
 
 public class Database {
 
@@ -19,6 +20,14 @@ public class Database {
         movies = data.createMovies();
         rooms = data.createRooms();
         showings = data.createShowings(movies, rooms);
+    }
+
+    public void reduceSeats(Showing showing, int nrOfSeats){
+        for (Showing s:showings) {
+            if (Objects.equals(s, showing)) {
+                s.setNrOfSeats(nrOfSeats);
+            }
+        }
     }
 
     public List<Person> getUsers() {

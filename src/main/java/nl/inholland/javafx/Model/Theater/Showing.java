@@ -41,7 +41,7 @@ public class Showing {
     }
 
     public void setNrOfSeats(int nrOfSeats) {
-        this.nrOfSeats = nrOfSeats;
+        this.nrOfSeats -= nrOfSeats;
     }
 
     public LocalDateTime getStartMovie() {

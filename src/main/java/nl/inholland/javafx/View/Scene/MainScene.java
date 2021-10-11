@@ -27,12 +27,14 @@ public class MainScene {
 
     private final VBox layout;
     private final VBox layoutContainer;
+    private TableView roomOne;
+    private TableView roomTwo;
 
     public MainScene(Main mainWindow) {
         this.main = mainWindow;
         this.db = new Database();
 
-        this.layoutContainer = new VBox(createSceneHeader("Purchase tickets"), createShowingDisplay(), new BaseForm().getForm(), createFooter());
+        this.layoutContainer = new VBox(createSceneHeader("Purchase tickets"), createShowingDisplay(), new BaseForm(this, db).getForm(), createFooter());
         this.layoutContainer.setPadding(new Insets(10, 10, 10, 10));
         this.layoutContainer.setAlignment(Pos.CENTER);
         this.layoutContainer.setSpacing(10);
@@ -51,11 +53,9 @@ public class MainScene {
 
         Menu adminMenu = new Menu("Admin");
         MenuItem manageShowingsItem = new MenuItem("Manage showings");
-        manageShowingsItem.setOnAction(actionEvent -> layoutContainer.getChildren().set(2,
-                new ManageShowingForm().getForm()));
+        manageShowingsItem.setOnAction(actionEvent -> this.setForm(new ManageShowingForm(this, db).getForm()));
         MenuItem manageMoviesItem = new MenuItem("Manage movies");
-        manageMoviesItem.setOnAction(actionEvent -> layoutContainer.getChildren().set(2,
-                new ManageMovieForm().getForm()));
+        manageMoviesItem.setOnAction(actionEvent -> this.setForm(new ManageMovieForm(this, db).getForm()));
         adminMenu.getItems().addAll(manageShowingsItem, manageMoviesItem);
 
         Menu helpMenu = new Menu("Help");
@@ -95,10 +95,13 @@ public class MainScene {
         displayContainer.setVgap(10);
         setGridConstraints(displayContainer, new int[] {585, 585});
 
+        roomOne = createDisplayTable("Room 1");
+        roomTwo = createDisplayTable("Room 2");
+
         displayContainer.add(new Label("Room 1"), 0, 0);
         displayContainer.add(new Label("Room 2"), 1, 0);
-        displayContainer.add(createDisplayTable("Room 1"), 0, 1);
-        displayContainer.add(createDisplayTable("Room 2"), 1, 1);
+        displayContainer.add(roomOne, 0, 1);
+        displayContainer.add(roomTwo, 1, 1);
 
         displayContainer.setStyle(
                 "-fx-border-style: solid inside;" +
@@ -118,8 +121,8 @@ public class MainScene {
         displayTable.setMinWidth(585);
         this.createTableColumns(displayTable);
         this.fillTable(displayTable, room);
-        displayTable.setOnMouseClicked(mouseEvent -> layoutContainer.getChildren().set(2,
-                new PurchaseTicketForm((Showing) displayTable.getSelectionModel().getSelectedItem()).getForm()));
+        displayTable.setOnMouseClicked(mouseEvent -> this.setForm(new PurchaseTicketForm(this, db, (Showing)
+                displayTable.getSelectionModel().getSelectedItem()).getForm()));
 
         return displayTable;
     }
@@ -187,12 +190,27 @@ public class MainScene {
 
 
 
+    // set form on main scene
+    public void setForm(GridPane form){
+        layoutContainer.getChildren().set(2, form);
+    }
+
+
 
     // Login function
     private void logOut(){
         new Login().getWindow().show();
         this.main.getWindow().close();
     }
+
+
+    public void refreshShowing(){
+        roomOne.getItems().clear();
+        roomTwo.getItems().clear();
+        fillTable(roomOne, "Room 1");
+        fillTable(roomTwo, "Room 2");
+    }
+
 
 
     // -- Return the main scene

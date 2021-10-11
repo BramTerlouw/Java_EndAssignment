@@ -1,15 +1,20 @@
 package nl.inholland.javafx.View.Form;
 
 import javafx.geometry.Insets;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import nl.inholland.javafx.Database.Database;
+import nl.inholland.javafx.View.Scene.MainScene;
 
 public class BaseForm {
 
     protected GridPane form;
+    protected MainScene main;
+    protected Database db;
 
-    public BaseForm() {
+    public BaseForm(MainScene main, Database db) {
         this.form = createGrid();
+        this.main = main;
+        this.db = db;
     }
 
     private GridPane createGrid() {
