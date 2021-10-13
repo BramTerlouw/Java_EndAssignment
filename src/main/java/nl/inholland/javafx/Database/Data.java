@@ -1,8 +1,7 @@
 package nl.inholland.javafx.Database;
 
-import nl.inholland.javafx.Model.Person.Admin;
 import nl.inholland.javafx.Model.Person.Person;
-import nl.inholland.javafx.Model.Person.User;
+import nl.inholland.javafx.Model.Person.Role;
 import nl.inholland.javafx.Model.Theater.Movie;
 import nl.inholland.javafx.Model.Theater.Room;
 import nl.inholland.javafx.Model.Theater.Showing;
@@ -18,10 +17,10 @@ public class Data {
         List<Person> users = new ArrayList<>();
 
         // make admin and user
-        Admin admin = new Admin(1, "admin", "Bram", "Terlouw",
-                LocalDate.of(2000, 02, 18), "bram@example.com", "password");
-        User user = new User(2, "user", "Mark", "de Haan",
-                LocalDate.of(1990, 02, 02), "mark@example.com", "password");
+        Person admin = new Person(1, "admin", "Bram", "Terlouw",
+                LocalDate.of(2000, 02, 18), "bram@example.com", "password", Role.ADMIN);
+        Person user = new Person(2, "user", "Mark", "de Haan",
+                LocalDate.of(1990, 02, 02), "mark@example.com", "password", Role.USER);
 
         // add users to list and return
         users.add(admin);

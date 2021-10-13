@@ -1,7 +1,8 @@
 # Java End assignment
 
 [To Do]:
-- user permissions
+- setFullWidth function
+- Ticket sales
 - Login
 - styling
 
@@ -13,6 +14,9 @@
 - Make forms
 - form functionalities
 - Error handling / verification
+- user permissions
 
-
+[Exam extra's]
+- File reader
+- Movie CRUD
 

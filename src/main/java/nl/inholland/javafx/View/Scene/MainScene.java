@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import nl.inholland.javafx.Database.Database;
+import nl.inholland.javafx.Model.Person.Role;
 import nl.inholland.javafx.Model.Theater.Showing;
 import nl.inholland.javafx.View.Form.BaseForm;
 import nl.inholland.javafx.View.Form.ManageMovieForm;
@@ -53,9 +54,13 @@ public class MainScene {
 
         Menu adminMenu = new Menu("Admin");
         MenuItem manageShowingsItem = new MenuItem("Manage showings");
-        manageShowingsItem.setOnAction(actionEvent -> this.setForm(new ManageShowingForm(this, db).getForm(), "Manage Showings"));
         MenuItem manageMoviesItem = new MenuItem("Manage movies");
-        manageMoviesItem.setOnAction(actionEvent -> this.setForm(new ManageMovieForm(this, db).getForm(), "Manage Movies"));
+
+        if (main.getUser().getRole().equals(Role.ADMIN))
+            manageShowingsItem.setOnAction(actionEvent -> this.setForm(new ManageShowingForm(this, db).getForm(), "Manage Showings"));
+
+        if (main.getUser().getRole().equals(Role.ADMIN))
+            manageMoviesItem.setOnAction(actionEvent -> this.setForm(new ManageMovieForm(this, db).getForm(), "Manage Movies"));
         adminMenu.getItems().addAll(manageShowingsItem, manageMoviesItem);
 
         Menu helpMenu = new Menu("Help");

@@ -8,18 +8,27 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import nl.inholland.javafx.Model.Person.User;
+import nl.inholland.javafx.Database.Database;
+import nl.inholland.javafx.Model.Person.Person;
+import nl.inholland.javafx.Model.Person.Role;
 import nl.inholland.javafx.View.Stage.Main;
 
+import javax.swing.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class LoginScene {
+    private Database db;
     private GridPane layout;
     private final Stage login;
     private final Scene loginScene;
 
+    private TextField txtUserName;
+    private PasswordField pwPassword;
+
     public LoginScene(Stage login) {
         this.login = login;
+        this.db = new Database();
         this.layout = createLogin();
         this.loginScene = new Scene(layout);
     }
@@ -33,10 +42,10 @@ public class LoginScene {
         Label lblUserName = new Label("Username");
         Label lblPassword = new Label("password");
 
-        TextField txtUserName = new TextField();
+        txtUserName = new TextField();
         txtUserName.setPromptText("Enter Username...");
 
-        PasswordField pwPassword = new PasswordField();
+        pwPassword = new PasswordField();
         pwPassword.setPromptText("Enter Password...");
 
         Button btnLogin = new Button("Log in");
@@ -52,10 +61,21 @@ public class LoginScene {
     }
 
     private void handleLogin(){
-        User temporary = new User(1, "test", "test", "test",
-                LocalDate.of(2000, 02, 18), "test", "test");
-        new Main(temporary).getWindow().show();
-        this.login.close();
+        Person person = null;
+        for (Person p:db.getUsers()) {
+            if (p.getUserName().equalsIgnoreCase(txtUserName.getText())
+                    && Objects.equals(p.getPassword(), pwPassword.getText()))
+            {
+                person = p;
+                break;
+            }
+        }
+        if (person == null)
+            JOptionPane.showMessageDialog(null, "Wrong credentials!", "Error", JOptionPane.ERROR_MESSAGE);
+        else{
+            new Main(person).getWindow().show();
+            this.login.close();
+        }
     }
 
     public Scene getLoginScene() {
