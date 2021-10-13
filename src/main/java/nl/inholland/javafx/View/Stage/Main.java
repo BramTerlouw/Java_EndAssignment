@@ -12,7 +12,6 @@ public class Main {
         this.window = new Stage();
         this.user = user;
         this.window.setMinWidth(1210);
-        //this.window.setHeight(700);
         this.window.setScene(new MainScene(this).getMainScene());
     }
 

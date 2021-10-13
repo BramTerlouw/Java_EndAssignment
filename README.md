@@ -3,7 +3,6 @@
 [To Do]:
 - setFullWidth function
 - Ticket sales
-- Login
 - styling
 
 [Done]:
@@ -15,6 +14,7 @@
 - form functionalities
 - Error handling / verification
 - user permissions
+- login
 
 [Exam extra's]
 - File reader

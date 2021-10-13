@@ -20,6 +20,7 @@ import nl.inholland.javafx.View.Stage.Login;
 import nl.inholland.javafx.View.Stage.Main;
 
 import java.awt.event.MouseEvent;
+import java.util.Objects;
 
 public class MainScene {
     private final Main main;
@@ -37,12 +38,14 @@ public class MainScene {
 
         this.layoutContainer = new VBox(createSceneHeader("Purchase tickets"), createShowingDisplay(),
                 new BaseForm(this, db).getForm(), createFooter());
+        this.layoutContainer.getStyleClass().add("custom-page-container");
         this.layoutContainer.setPadding(new Insets(10, 10, 10, 10));
         this.layoutContainer.setAlignment(Pos.CENTER);
         this.layoutContainer.setSpacing(10);
 
         this.layout = new VBox(createNavBar(), layoutContainer);
         this.mainScene = new Scene(this.layout);
+        this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toString());
         main.setStageTitle("Purchase tickets");
     }
 
@@ -92,6 +95,7 @@ public class MainScene {
     // create grid with tableviews
     private GridPane createShowingDisplay(){
         GridPane displayContainer = new GridPane();
+        displayContainer.getStyleClass().add("custom-tableview-container");
         displayContainer.setPadding(new Insets(10));
         displayContainer.setMinHeight(400);
         displayContainer.setMinWidth(1200);
@@ -107,11 +111,6 @@ public class MainScene {
         displayContainer.add(new Label("Room 2"), 1, 0);
         displayContainer.add(roomOne, 0, 1);
         displayContainer.add(roomTwo, 1, 1);
-
-        displayContainer.setStyle(
-                "-fx-border-style: solid inside;" +
-                        "-fx-border-width: 1;" +
-                        "-fx-border-color: blue;");
         return displayContainer;
     }
 
@@ -167,12 +166,10 @@ public class MainScene {
     // Create scene footer
     private Pane createFooter(){
         Pane pane = new Pane();
+        pane.getStyleClass().add("custom-footer");
         pane.setMinHeight(50);
         pane.setMinWidth(1200);
         pane.setMaxWidth(1200);
-        pane.setStyle(
-                "-fx-border-style: solid inside;" +
-                        "-fx-background-color: Orange;");
         return pane;
     }
 
