@@ -26,6 +26,7 @@ public class ManageShowingForm extends BaseForm{
 
     public ManageShowingForm(MainScene main, Database db) {
         super(main, db);
+        this.form.getStyleClass().add("custom-form");
 
         // labels for nr of seats, ticket price and end date (value set with listeners)
         lblNrOfSeatsAnswer = new Label();
@@ -35,6 +36,7 @@ public class ManageShowingForm extends BaseForm{
 
         // datepicker and text field for the start of the movie
         dpStart = new DatePicker();
+        dpStart.setMaxWidth(135);
         dpStart.setValue(LocalDate.now());
 
         txtTime = new TextField();
@@ -44,6 +46,8 @@ public class ManageShowingForm extends BaseForm{
         // combo boxes for all movies and rooms
         cbMovies = new ComboBox<>();
         cbRooms = new ComboBox<>();
+        cbMovies.setMinWidth(145);
+        cbRooms.setMinWidth(145);
         for (Movie m: db.getMovies()) { cbMovies.getItems().add(m.getName()); }
         for (Room r: db.getRooms()) { cbRooms.getItems().add(r.getName()); }
 

@@ -13,17 +13,21 @@ public class PurchaseTicketForm extends BaseForm{
 
     public PurchaseTicketForm(MainScene main, Database db, Showing showing) {
         super(main, db);
+        this.form.getStyleClass().add("custom-form");
+
         if (showing != null) {
             Label lblRoomAnswer = new Label(showing.getRoom().getName());
             Label lblStartAnswer = new Label(showing.getStartMovie().toString());
             Label lblEndAnswer = new Label(showing.getEndMovie().toString());
             Label lblTitleAnswer = new Label(showing.getMovieTitle());
             ComboBox<Integer> cbNrOfSeats = new ComboBox();
+            cbNrOfSeats.setMinWidth(130);
             for (int i = 1; i < 16; i++) {
                 cbNrOfSeats.getItems().add(i);
             }
             cbNrOfSeats.getSelectionModel().selectFirst();
             TextField txtNameAnswer = new TextField();
+            txtNameAnswer.setMaxWidth(130);
             Button btnPurchase = new Button("Purchase");
             Button btnClear = new Button("Clear");
             btnClear.setOnAction(actionEvent -> handleClear());

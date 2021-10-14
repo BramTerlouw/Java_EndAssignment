@@ -1,5 +1,9 @@
 package nl.inholland.javafx.Database;
 
+import nl.inholland.javafx.Database.Migrations.movieMigrator;
+import nl.inholland.javafx.Database.Migrations.roomMigrator;
+import nl.inholland.javafx.Database.Migrations.showingMigrator;
+import nl.inholland.javafx.Database.Migrations.userMigration;
 import nl.inholland.javafx.Model.Person.Person;
 import nl.inholland.javafx.Model.Theater.Movie;
 import nl.inholland.javafx.Model.Theater.Room;
@@ -15,11 +19,10 @@ public class Database {
     private final List<Showing> showings;
 
     public Database() {
-        Data data = new Data();
-        users = data.createPersons();
-        movies = data.createMovies();
-        rooms = data.createRooms();
-        showings = data.createShowings(movies, rooms);
+        users = new userMigration().createPersons();
+        movies = new movieMigrator().createMovies();
+        rooms = new roomMigrator().createRooms();
+        showings = new showingMigrator().createShowings(movies, rooms);
     }
 
 

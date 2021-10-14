@@ -1,6 +1,7 @@
 package nl.inholland.javafx.View.Form;
 
 import javafx.geometry.Insets;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import nl.inholland.javafx.Database.Database;
 import nl.inholland.javafx.View.Scene.MainScene;
@@ -21,14 +22,23 @@ public class BaseForm {
 
     private GridPane createGrid() {
         GridPane form = new GridPane();
-        form.getStyleClass().add("custom-form");
+        form.getStyleClass().add("custom-empty-form");
         form.setPadding(new Insets(10));
         form.setVgap(10);
-        form.setHgap(45);
+        form.setHgap(5);
         form.setMinHeight(180);
         form.setMinWidth(1200);
         form.setMaxWidth(1200);
+        setColConstraint(form, new int[]{145, 145, 145, 60, 70, 480});
         return form;
+    }
+
+    private void setColConstraint(GridPane form, int[] colWidths){
+        for (int width:colWidths) {
+            ColumnConstraints colConstraint = new ColumnConstraints();
+            colConstraint.setMinWidth(width);
+            form.getColumnConstraints().add(colConstraint);
+        }
     }
 
     protected void showErrorMessage(String message){

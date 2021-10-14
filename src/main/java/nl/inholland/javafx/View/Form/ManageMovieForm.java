@@ -20,6 +20,8 @@ public class ManageMovieForm extends BaseForm{
 
     public ManageMovieForm(MainScene main, Database db) {
         super(main, db);
+        this.form.getStyleClass().add("custom-form");
+
         txtMovie = new TextField();
         txtMovie.setPromptText("Movie title...");
         txtPrice = new TextField();
@@ -44,7 +46,7 @@ public class ManageMovieForm extends BaseForm{
         form.add(txtMinutes, 2, 2);
         form.add(btnAdd, 0, 4);
         form.add(btnClear, 1, 4);
-        form.add(createMovieList(), 3, 0, 1, 3);
+        form.add(createMovieList(), 5, 0, 1, 3);
     }
 
     private void handleClear(){
@@ -89,24 +91,30 @@ public class ManageMovieForm extends BaseForm{
 
     private TableView createMovieList(){
         TableView movies = new TableView();
+        movies.getStyleClass().add("movies-table");
         movies.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        movies.setMaxHeight(100);
+        movies.setMaxHeight(125);
+        movies.setMinWidth(500);
         this.createTableColumns(movies);
         this.fillTable(movies);
         return movies;
     }
     private void createTableColumns(TableView table){
         TableColumn<Showing, String> col1 = new TableColumn<>("Movie Name");
+        col1.setMinWidth(140);
         col1.setCellValueFactory(new PropertyValueFactory<>("name"));
 
         TableColumn<Showing, String> col2 = new TableColumn<>("Price");
         col2.setCellValueFactory(new PropertyValueFactory<>("ticketPrice"));
+        col2.setMinWidth(140);
 
         TableColumn<Showing, String> col3 = new TableColumn<>("Hours");
         col3.setCellValueFactory(new PropertyValueFactory<>("durationHours"));
+        col3.setMinWidth(100);
 
         TableColumn<Showing, String> col4 = new TableColumn<>("Minutes");
         col4.setCellValueFactory(new PropertyValueFactory<>("durationMinutes"));
+        col4.setMinWidth(100);
 
         table.getColumns().addAll(col1, col2, col3, col4);
     }

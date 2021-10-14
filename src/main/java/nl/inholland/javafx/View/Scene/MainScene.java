@@ -37,7 +37,7 @@ public class MainScene {
         this.db = new Database();
 
         this.layoutContainer = new VBox(createSceneHeader("Purchase tickets"), createShowingDisplay(),
-                new BaseForm(this, db).getForm(), createFooter());
+                new BaseForm(this, db).getForm());
         this.layoutContainer.getStyleClass().add("custom-page-container");
         this.layoutContainer.setPadding(new Insets(10, 10, 10, 10));
         this.layoutContainer.setAlignment(Pos.CENTER);
@@ -97,7 +97,7 @@ public class MainScene {
         GridPane displayContainer = new GridPane();
         displayContainer.getStyleClass().add("custom-tableview-container");
         displayContainer.setPadding(new Insets(10));
-        displayContainer.setMinHeight(400);
+        displayContainer.setMinHeight(300);
         displayContainer.setMinWidth(1200);
         displayContainer.setMaxWidth(1200);
         displayContainer.setHgap(10);
@@ -121,6 +121,7 @@ public class MainScene {
     }
     private TableView createDisplayTable(String room){
         TableView displayTable = new TableView();
+        displayTable.getStyleClass().add("main-table");
         displayTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         displayTable.setMinWidth(585);
         this.createTableColumns(displayTable);
@@ -161,17 +162,6 @@ public class MainScene {
         }
     }
 
-
-
-    // Create scene footer
-    private Pane createFooter(){
-        Pane pane = new Pane();
-        pane.getStyleClass().add("custom-footer");
-        pane.setMinHeight(50);
-        pane.setMinWidth(1200);
-        pane.setMaxWidth(1200);
-        return pane;
-    }
 
 
 
