@@ -10,16 +10,14 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import nl.inholland.javafx.Database.Database;
 import nl.inholland.javafx.Model.Person.Person;
-import nl.inholland.javafx.Model.Person.Role;
 import nl.inholland.javafx.View.Stage.Main;
 
 import javax.swing.*;
-import java.time.LocalDate;
 import java.util.Objects;
 
 public class LoginScene {
-    private Database db;
-    private GridPane layout;
+    private final Database db;
+    private final GridPane layout;
     private final Stage login;
     private final Scene loginScene;
 
@@ -61,21 +59,21 @@ public class LoginScene {
     }
 
     private void handleLogin(){
-        Person person = null;
-        for (Person p:db.getUsers()) {
-            if (p.getUserName().equalsIgnoreCase(txtUserName.getText())
-                    && Objects.equals(p.getPassword(), pwPassword.getText()))
+        for (Person person: db.getUsers()){
+            if (person.getUserName().equalsIgnoreCase(txtUserName.getText())
+                    && Objects.equals(person.getPassword(), pwPassword.getText()))
             {
-                person = p;
-                break;
+                performLogin(person);
+                return;
             }
         }
-        if (person == null)
-            JOptionPane.showMessageDialog(null, "Wrong credentials!", "Error", JOptionPane.ERROR_MESSAGE);
-        else{
-            new Main(person).getWindow().show();
-            this.login.close();
-        }
+        // display error message when no user is found
+        JOptionPane.showMessageDialog(null, "Wrong credentials!", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void performLogin(Person person){
+        new Main(person).getWindow().show();
+        this.login.close();
     }
 
     public Scene getLoginScene() {

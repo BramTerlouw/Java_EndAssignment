@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import nl.inholland.javafx.Database.Database;
 import nl.inholland.javafx.Model.Theater.Showing;
+import nl.inholland.javafx.Model.Theater.Ticket;
 import nl.inholland.javafx.View.Scene.MainScene;
 
 
@@ -63,7 +64,7 @@ public class PurchaseTicketForm extends BaseForm{
         if (!txtName.getText().isBlank()) {
             nameCustomer = txtName.getText();
             if (this.validatePurchase(showing, nrOfSeatsChosen)){
-                this.db.reduceSeats(showing, nrOfSeatsChosen);
+                this.db.addTicket(new Ticket(db.getNrOfTickets() + 1, nameCustomer, showing, nrOfSeatsChosen));
                 showConfirmationMessage("Purchase for " + nameCustomer + " was approved!",
                         "Purchase confirmation");
                 main.refreshShowing();

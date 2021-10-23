@@ -16,6 +16,7 @@ public class Main {
     }
 
     public void setStageTitle(String title){
+        // set the title of the window -> display logged-in user
         this.window.setTitle("Vue Cinema -- " + title + " -- Username: " + user.getFirstName());
     }
 

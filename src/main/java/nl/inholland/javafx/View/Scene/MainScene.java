@@ -10,7 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import nl.inholland.javafx.Database.Database;
-import nl.inholland.javafx.Model.Person.Role;
+import nl.inholland.javafx.Model.Person.Admin;
 import nl.inholland.javafx.Model.Theater.Showing;
 import nl.inholland.javafx.View.Form.BaseForm;
 import nl.inholland.javafx.View.Form.ManageMovieForm;
@@ -19,7 +19,6 @@ import nl.inholland.javafx.View.Form.PurchaseTicketForm;
 import nl.inholland.javafx.View.Stage.Login;
 import nl.inholland.javafx.View.Stage.Main;
 
-import java.awt.event.MouseEvent;
 import java.util.Objects;
 
 public class MainScene {
@@ -58,12 +57,14 @@ public class MainScene {
         Menu adminMenu = new Menu("Admin");
         MenuItem manageShowingsItem = new MenuItem("Manage showings");
         MenuItem manageMoviesItem = new MenuItem("Manage movies");
-
-        if (main.getUser().getRole().equals(Role.ADMIN))
-            manageShowingsItem.setOnAction(actionEvent -> this.setForm(new ManageShowingForm(this, db).getForm(), "Manage Showings"));
-
-        if (main.getUser().getRole().equals(Role.ADMIN))
-            manageMoviesItem.setOnAction(actionEvent -> this.setForm(new ManageMovieForm(this, db).getForm(), "Manage Movies"));
+        manageShowingsItem.setOnAction(actionEvent -> { this.setForm(new ManageShowingForm(this, db).getForm(),
+                    "Manage Showings");
+            setSceneHeader("Manage showing");
+        });
+        manageMoviesItem.setOnAction(actionEvent -> { this.setForm(new ManageMovieForm(this, db).getForm(),
+                    "Manage Movies");
+            setSceneHeader("Manage movie");
+        });
         adminMenu.getItems().addAll(manageShowingsItem, manageMoviesItem);
 
         Menu helpMenu = new Menu("Help");
@@ -75,8 +76,15 @@ public class MainScene {
         logoutItem.setOnAction(actionEvent -> logOut());
         logoutMenu.getItems().add(logoutItem);
 
-        navBar.getMenus().addAll(adminMenu, helpMenu, logoutMenu);
+        this.setPermissions(navBar, adminMenu, helpMenu, logoutMenu);
         return navBar;
+    }
+
+    private void setPermissions(MenuBar navBar, Menu adminMenu, Menu helpMenu, Menu logoutMenu){
+        if (main.getUser() instanceof Admin) {
+            navBar.getMenus().add(adminMenu);
+        }
+        navBar.getMenus().addAll(helpMenu, logoutMenu);
     }
 
 
@@ -88,6 +96,11 @@ public class MainScene {
         header.getChildren().add(sceneHeader);
         header.setMaxWidth(1200);
         return header;
+    }
+
+    // set scene header
+    public void setSceneHeader(String text){
+        this.layoutContainer.getChildren().set(0, createSceneHeader(text));
     }
 
 
@@ -126,9 +139,13 @@ public class MainScene {
         displayTable.setMinWidth(585);
         this.createTableColumns(displayTable);
         this.fillTable(displayTable, room);
-        displayTable.setOnMouseClicked(mouseEvent -> this.setForm(new PurchaseTicketForm(this, db, (Showing)
-                displayTable.getSelectionModel().getSelectedItem()).getForm(), "Purchase tickets"));
-
+        displayTable.setOnMouseClicked(mouseEvent ->
+        {
+            if (displayTable.getSelectionModel().getSelectedItem() != null) {
+                this.setForm(new PurchaseTicketForm(this, db, (Showing)
+                        displayTable.getSelectionModel().getSelectedItem()).getForm(), "Purchase tickets");
+            }
+        });
         return displayTable;
     }
     private void createTableColumns(TableView table){

@@ -12,10 +12,9 @@ public class Person {
     private int age;
     private String email;
     private String password;
-    private Role role;
 
     public Person(int id, String userName, String firstName, String lastName, LocalDate birthday,
-                  String email, String password, Role role) {
+                  String email, String password) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
@@ -24,7 +23,6 @@ public class Person {
         this.age = (int) ChronoUnit.YEARS.between(birthday, LocalDate.now());
         this.email = email;
         this.password = password;
-        this.role = role;
     }
 
     public int getId() {
@@ -89,13 +87,5 @@ public class Person {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 }

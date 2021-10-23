@@ -46,7 +46,7 @@
 
 
 .main-table {
-    -fx-background-color: transparent;
+    -fx-background-color: #6d6d6d;
 }
 .main-table .column-header-background .filler {
     -fx-background-color: transparent;
@@ -83,6 +83,9 @@
 }
 .main-table .virtual-flow .scroll-bar:vertical {
     -fx-background-color: transparent;
+}
+.main-table .scroll-bar:horizontal {
+    -fx-opacity: 0;
 }
 
 
@@ -122,6 +125,9 @@
 }
 .movies-table .virtual-flow .scroll-bar:vertical {
     -fx-background-color: transparent;
+}
+.movies-table .scroll-bar:horizontal {
+    -fx-opacity: 0;
 }
 
 

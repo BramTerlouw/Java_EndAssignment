@@ -50,29 +50,7 @@ public class ManageShowingForm extends BaseForm{
         cbRooms.setMinWidth(145);
         for (Movie m: db.getMovies()) { cbMovies.getItems().add(m.getName()); }
         for (Room r: db.getRooms()) { cbRooms.getItems().add(r.getName()); }
-
-        cbMovies.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
-            db.getMovies().stream().filter(movie -> cbMovies.getValue().equalsIgnoreCase(movie.getName())).findAny()
-                    .ifPresent(m -> {
-                        lblPriceAnswer.setText(String.valueOf(m.getTicketPrice()));
-                        movie = m;
-                        endDateListenEvent();
-                    });
-        });
-        cbRooms.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
-            db.getRooms().stream().filter(room -> cbRooms.getValue().equalsIgnoreCase(room.getName())).findAny()
-                    .ifPresent(r -> {
-                        lblNrOfSeatsAnswer.setText(String.valueOf(r.getNrOfSeats()));
-                        room = r;
-                    });
-
-        });
-        txtTime.textProperty().addListener((observable, oldValue, newValue) -> {
-            endDateListenEvent();
-        });
-        dpStart.valueProperty().addListener((observable, oldValue, newValue) -> {
-            endDateListenEvent();
-        });
+        this.setFormListeners();
 
         cbMovies.getSelectionModel().selectFirst();
         cbRooms.getSelectionModel().selectFirst();
@@ -102,16 +80,42 @@ public class ManageShowingForm extends BaseForm{
         form.add(btnClear, 1, 4);
     }
 
+    // set listeners on the combo boxes, text field and date picker
+    private void setFormListeners(){
+        cbMovies.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+            db.getMovies().stream().filter(movie -> cbMovies.getValue().equalsIgnoreCase(movie.getName())).findAny()
+                    .ifPresent(m -> {
+                        lblPriceAnswer.setText(String.valueOf(m.getTicketPrice()));
+                        movie = m;
+                        endDateListenEvent();
+                    });
+        });
+        cbRooms.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+            db.getRooms().stream().filter(room -> cbRooms.getValue().equalsIgnoreCase(room.getName())).findAny()
+                    .ifPresent(r -> {
+                        lblNrOfSeatsAnswer.setText(String.valueOf(r.getNrOfSeats()));
+                        room = r;
+                    });
 
+        });
+        txtTime.textProperty().addListener((observable, oldValue, newValue) -> {
+            endDateListenEvent();
+        });
+        dpStart.valueProperty().addListener((observable, oldValue, newValue) -> {
+            endDateListenEvent();
+        });
+    }
 
-
-
+    // handle clear button pressed action event
     private void handleClear(){
+        setOriginalHeaderScene();
         this.main.setForm(new BaseForm(main, db).getForm(), "Purchase tickets");
     }
 
+    // handle add button pressed action event
     private void handleAdd(){
         if (validateInputRegex(true) && validateNewShowingDateTime()) {
+            setOriginalHeaderScene();
             db.insertShowing(new Showing(this.movie, this.room, this.getStartMovie()));
             showConfirmationMessage("Confirmation new showing.", "The new showing is added to the agenda!");
             main.refreshShowing();
@@ -120,10 +124,7 @@ public class ManageShowingForm extends BaseForm{
     }
 
 
-
-
-
-
+    // get start time of movie
     private LocalDateTime getStartMovie(){
         LocalDate startDateMovie = dpStart.getValue();
 
@@ -132,6 +133,7 @@ public class ManageShowingForm extends BaseForm{
         return LocalDateTime.of(startDateMovie, startTimeMovie);
     }
 
+    // get end time of movie
     private String getEndMovie(LocalDateTime movieDate, long hours, long minutes){
         LocalDateTime end = movieDate.plusHours(hours);
         end = end.plusMinutes(minutes);
@@ -176,6 +178,7 @@ public class ManageShowingForm extends BaseForm{
         return !startNewShowing.isAfter(endOldShowing) && !startOldShowing.isAfter(endNewShowing);
     }
 
+    // validate user input values
     private boolean validateInputRegex(boolean showError){
         if (!txtTime.getText().matches("\\d{2}:\\d{2}")){
             if (showError)

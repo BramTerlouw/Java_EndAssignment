@@ -13,10 +13,10 @@ import java.util.regex.Pattern;
 
 public class ManageMovieForm extends BaseForm{
 
-    private TextField txtMovie;
-    private TextField txtPrice;
-    private TextField txtHours;
-    private TextField txtMinutes;
+    private final TextField txtMovie;
+    private final TextField txtPrice;
+    private final TextField txtHours;
+    private final TextField txtMinutes;
 
     public ManageMovieForm(MainScene main, Database db) {
         super(main, db);
@@ -49,18 +49,23 @@ public class ManageMovieForm extends BaseForm{
         form.add(createMovieList(), 5, 0, 1, 3);
     }
 
+    // handle clear button pressed action event
     private void handleClear(){
         this.main.setForm(new BaseForm(main, db).getForm(), "Purchase tickets");
+        setOriginalHeaderScene();
     }
 
+    // handle add button pressed action event
     private void handleAdd(){
         if (validateUserInput() && validateUserRegex()) {
             db.insertMovie(new Movie(txtMovie.getText(), Double.parseDouble(txtPrice.getText()),
                     Long.parseLong(txtHours.getText()), Long.parseLong(txtMinutes.getText())));
             this.main.setForm(new BaseForm(main, db).getForm(), "Purchase tickets");
+            setOriginalHeaderScene();
         }
     }
 
+    // validate the input values of the user
     private boolean validateUserRegex(){
         String decimalPattern = "([0-9]*)\\.([0-9]*)";
         if (!Pattern.matches(decimalPattern, txtPrice.getText())){
@@ -79,6 +84,7 @@ public class ManageMovieForm extends BaseForm{
             return true;
     }
 
+    // validate the text fields (are all fields filled?)
     private boolean validateUserInput(){
         if (txtMovie.getText().isEmpty() || txtPrice.getText().isEmpty() || txtHours.getText().isEmpty() ||
                 txtMinutes.getText().isEmpty()){
@@ -88,7 +94,7 @@ public class ManageMovieForm extends BaseForm{
         return true;
     }
 
-
+    // create tableview for displaying all movies
     private TableView createMovieList(){
         TableView movies = new TableView();
         movies.getStyleClass().add("movies-table");
