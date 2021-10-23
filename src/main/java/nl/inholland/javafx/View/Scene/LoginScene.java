@@ -24,9 +24,9 @@ public class LoginScene {
     private TextField txtUserName;
     private PasswordField pwPassword;
 
-    public LoginScene(Stage login) {
+    public LoginScene(Stage login, Database db) {
         this.login = login;
-        this.db = new Database();
+        this.db = db;
         this.layout = createLogin();
         this.loginScene = new Scene(layout);
     }
@@ -72,7 +72,7 @@ public class LoginScene {
     }
 
     private void performLogin(Person person){
-        new Main(person).getWindow().show();
+        new Main(person, db).getWindow().show();
         this.login.close();
     }
 

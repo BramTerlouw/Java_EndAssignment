@@ -31,9 +31,9 @@ public class MainScene {
     private TableView roomOne;
     private TableView roomTwo;
 
-    public MainScene(Main mainWindow) {
+    public MainScene(Main mainWindow, Database db) {
         this.main = mainWindow;
-        this.db = new Database();
+        this.db = db;
 
         this.layoutContainer = new VBox(createSceneHeader("Purchase tickets"), createShowingDisplay(),
                 new BaseForm(this, db).getForm());
@@ -139,15 +139,28 @@ public class MainScene {
         displayTable.setMinWidth(585);
         this.createTableColumns(displayTable);
         this.fillTable(displayTable, room);
-        displayTable.setOnMouseClicked(mouseEvent ->
-        {
-            if (displayTable.getSelectionModel().getSelectedItem() != null) {
-                this.setForm(new PurchaseTicketForm(this, db, (Showing)
-                        displayTable.getSelectionModel().getSelectedItem()).getForm(), "Purchase tickets");
-            }
-        });
+        this.setClickEvent(displayTable);
         return displayTable;
     }
+
+    private void setClickEvent(TableView table){
+        table.setRowFactory(factory -> {
+            TableRow<Showing> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty()){
+                    Showing showing = row.getItem();
+                    this.setForm(new PurchaseTicketForm(this, db, showing).getForm(), "Purchase tickets");
+                }
+                else {
+                    this.setForm(new BaseForm(this, db).getForm(), "Purchase tickets");
+                }
+            });
+            return row;
+        });
+    }
+
+
+
     private void createTableColumns(TableView table){
         TableColumn<Showing, String> col1 = new TableColumn<>("Start");
         col1.setMinWidth(150);
@@ -184,7 +197,7 @@ public class MainScene {
 
     // Login function
     private void logOut(){
-        new Login().getWindow().show();
+        new Login(db).getWindow().show();
         this.main.getWindow().close();
     }
 
