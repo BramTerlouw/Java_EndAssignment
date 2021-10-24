@@ -1,22 +1,11 @@
 # Java End assignment
+Made by: Bram Terlouw, 614992@student.inholland.nl, INF2a
 
-[To Do]:
-- setFullWidth function
-- Ticket sales
-- styling
+##User Credentials
+- Username: user
+- Password: password
 
-[Done]:
-- Login structure
-- Main structure
-- produce initial data
-- fill table view
-- Make forms
-- form functionalities
-- Error handling / verification
-- user permissions
-- login
-
-[Exam extra's]
-- File reader
-- Movie CRUD
+##Admin Credentials
+- Username: admin
+- Password: password
 

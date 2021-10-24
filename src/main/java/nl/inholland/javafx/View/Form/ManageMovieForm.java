@@ -69,7 +69,7 @@ public class ManageMovieForm extends BaseForm {
     private boolean validateUserRegex() {
         String decimalPattern = "([0-9]*)\\.([0-9]*)";
         if (!Pattern.matches(decimalPattern, txtPrice.getText())) {
-            showErrorMessage("Wrong value for price!");
+            showErrorMessage("Wrong value for price, input must be like 00.00!");
             return false;
         } else if (!txtHours.getText().matches("[0-9]*")) {
             showErrorMessage("Wrong value for hours!");

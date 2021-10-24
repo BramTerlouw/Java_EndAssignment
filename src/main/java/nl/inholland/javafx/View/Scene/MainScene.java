@@ -150,6 +150,7 @@ public class MainScene {
                 if (!row.isEmpty()) {
                     Showing showing = row.getItem();
                     this.setForm(new PurchaseTicketForm(this, db, showing).getForm(), "Purchase tickets");
+                    setSceneHeader("Purchase tickets");
                 } else {
                     this.setForm(new BaseForm(this, db).getForm(), "Purchase tickets");
                 }
