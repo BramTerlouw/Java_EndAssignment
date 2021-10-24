@@ -1,12 +1,13 @@
 package nl.inholland.javafx.Database.Migrations;
 
 import nl.inholland.javafx.Model.Theater.Movie;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class movieMigrator{
+public class movieMigrator {
 
-    public List<Movie> createMovies(){
+    public List<Movie> createMovies() {
         List<Movie> movies = new ArrayList<>();
 
         // make movies

@@ -10,7 +10,7 @@ import nl.inholland.javafx.Model.Theater.Ticket;
 import nl.inholland.javafx.View.Scene.MainScene;
 
 
-public class PurchaseTicketForm extends BaseForm{
+public class PurchaseTicketForm extends BaseForm {
 
     public PurchaseTicketForm(MainScene main, Database db, Showing showing) {
         super(main, db);
@@ -53,31 +53,29 @@ public class PurchaseTicketForm extends BaseForm{
         }
     }
 
-    private void handleClear(){
+    private void handleClear() {
         this.main.setForm(new BaseForm(main, db).getForm(), "Purchase tickets");
     }
 
-    private void handlePurchase(Showing showing, ComboBox cbNrOfSeats, TextField txtName){
+    private void handlePurchase(Showing showing, ComboBox cbNrOfSeats, TextField txtName) {
         String nameCustomer;
         int nrOfSeatsChosen = (int) cbNrOfSeats.getSelectionModel().getSelectedItem();
 
         if (!txtName.getText().isBlank()) {
             nameCustomer = txtName.getText();
-            if (this.validatePurchase(showing, nrOfSeatsChosen)){
+            if (this.validatePurchase(showing, nrOfSeatsChosen)) {
                 this.db.addTicket(new Ticket(db.getNrOfTickets() + 1, nameCustomer, showing, nrOfSeatsChosen));
                 showConfirmationMessage("Purchase for " + nameCustomer + " was approved!",
                         "Purchase confirmation");
                 main.refreshShowing();
                 this.main.setForm(new BaseForm(main, db).getForm(), "Purchase tickets");
-            }
-            else
+            } else
                 showErrorMessage("Not enough seats available!");
-        }
-        else
+        } else
             showErrorMessage("All fields have te be filled!");
     }
 
-    private boolean validatePurchase(Showing showing, int nrOfSeatsChosen){
+    private boolean validatePurchase(Showing showing, int nrOfSeatsChosen) {
         if (nrOfSeatsChosen <= 0)
             return false;
         else if ((showing.getNrOfSeats() - nrOfSeatsChosen) < 0)

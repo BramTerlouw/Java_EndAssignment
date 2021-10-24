@@ -3,6 +3,7 @@ package nl.inholland.javafx.Database.Migrations;
 import nl.inholland.javafx.Model.Theater.Movie;
 import nl.inholland.javafx.Model.Theater.Room;
 import nl.inholland.javafx.Model.Theater.Showing;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class showingMigrator {
 
-    public List<Showing> createShowings(List<Movie> movies, List<Room> rooms){
+    public List<Showing> createShowings(List<Movie> movies, List<Room> rooms) {
         List<Showing> showings = new ArrayList<>();
 
         // make showings

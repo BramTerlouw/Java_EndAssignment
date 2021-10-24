@@ -10,7 +10,7 @@ import java.util.List;
 
 public class userMigration {
 
-    public List<Person> createPersons(){
+    public List<Person> createPersons() {
         List<Person> users = new ArrayList<>();
 
         // make admin and user

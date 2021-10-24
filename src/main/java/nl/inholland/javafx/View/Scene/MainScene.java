@@ -49,19 +49,20 @@ public class MainScene {
     }
 
 
-
     // create navbar for scene
-    private MenuBar createNavBar(){
+    private MenuBar createNavBar() {
         MenuBar navBar = new MenuBar();
 
         Menu adminMenu = new Menu("Admin");
         MenuItem manageShowingsItem = new MenuItem("Manage showings");
         MenuItem manageMoviesItem = new MenuItem("Manage movies");
-        manageShowingsItem.setOnAction(actionEvent -> { this.setForm(new ManageShowingForm(this, db).getForm(),
+        manageShowingsItem.setOnAction(actionEvent -> {
+            this.setForm(new ManageShowingForm(this, db).getForm(),
                     "Manage Showings");
             setSceneHeader("Manage showing");
         });
-        manageMoviesItem.setOnAction(actionEvent -> { this.setForm(new ManageMovieForm(this, db).getForm(),
+        manageMoviesItem.setOnAction(actionEvent -> {
+            this.setForm(new ManageMovieForm(this, db).getForm(),
                     "Manage Movies");
             setSceneHeader("Manage movie");
         });
@@ -80,7 +81,7 @@ public class MainScene {
         return navBar;
     }
 
-    private void setPermissions(MenuBar navBar, Menu adminMenu, Menu helpMenu, Menu logoutMenu){
+    private void setPermissions(MenuBar navBar, Menu adminMenu, Menu helpMenu, Menu logoutMenu) {
         if (main.getUser() instanceof Admin) {
             navBar.getMenus().add(adminMenu);
         }
@@ -88,9 +89,8 @@ public class MainScene {
     }
 
 
-
     // create header of scene
-    private HBox createSceneHeader(String text){
+    private HBox createSceneHeader(String text) {
         HBox header = new HBox();
         Label sceneHeader = new Label(text);
         header.getChildren().add(sceneHeader);
@@ -99,14 +99,13 @@ public class MainScene {
     }
 
     // set scene header
-    public void setSceneHeader(String text){
+    public void setSceneHeader(String text) {
         this.layoutContainer.getChildren().set(0, createSceneHeader(text));
     }
 
 
-
     // create grid with tableviews
-    private GridPane createShowingDisplay(){
+    private GridPane createShowingDisplay() {
         GridPane displayContainer = new GridPane();
         displayContainer.getStyleClass().add("custom-tableview-container");
         displayContainer.setPadding(new Insets(10));
@@ -115,7 +114,7 @@ public class MainScene {
         displayContainer.setMaxWidth(1200);
         displayContainer.setHgap(10);
         displayContainer.setVgap(10);
-        setGridConstraints(displayContainer, new int[] {585, 585});
+        setGridConstraints(displayContainer, new int[]{585, 585});
 
         roomOne = createDisplayTable("Room 1");
         roomTwo = createDisplayTable("Room 2");
@@ -127,12 +126,13 @@ public class MainScene {
         return displayContainer;
     }
 
-    private void setGridConstraints(GridPane grid, int[] colWidths){
-        for (int width:colWidths) {
+    private void setGridConstraints(GridPane grid, int[] colWidths) {
+        for (int width : colWidths) {
             grid.getColumnConstraints().add(new ColumnConstraints(width));
         }
     }
-    private TableView createDisplayTable(String room){
+
+    private TableView createDisplayTable(String room) {
         TableView displayTable = new TableView();
         displayTable.getStyleClass().add("main-table");
         displayTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -143,15 +143,14 @@ public class MainScene {
         return displayTable;
     }
 
-    private void setClickEvent(TableView table){
+    private void setClickEvent(TableView table) {
         table.setRowFactory(factory -> {
             TableRow<Showing> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
-                if (!row.isEmpty()){
+                if (!row.isEmpty()) {
                     Showing showing = row.getItem();
                     this.setForm(new PurchaseTicketForm(this, db, showing).getForm(), "Purchase tickets");
-                }
-                else {
+                } else {
                     this.setForm(new BaseForm(this, db).getForm(), "Purchase tickets");
                 }
             });
@@ -160,8 +159,7 @@ public class MainScene {
     }
 
 
-
-    private void createTableColumns(TableView table){
+    private void createTableColumns(TableView table) {
         TableColumn<Showing, String> col1 = new TableColumn<>("Start");
         col1.setMinWidth(150);
         col1.setCellValueFactory(new PropertyValueFactory<>("startMovie"));
@@ -184,25 +182,24 @@ public class MainScene {
 
         table.getColumns().addAll(col1, col2, col3, col4, col5);
     }
-    private void fillTable(TableView table, String room){
+
+    private void fillTable(TableView table, String room) {
         ObservableList<Showing> showings = FXCollections.observableArrayList(db.getShowings());
-        for (Showing showing:showings) {
+        for (Showing showing : showings) {
             if (showing.getRoom().getName().equalsIgnoreCase(room))
                 table.getItems().add(showing);
         }
     }
 
 
-
-
     // Login function
-    private void logOut(){
+    private void logOut() {
         new Login(db).getWindow().show();
         this.main.getWindow().close();
     }
 
     // refresh the tableviews
-    public void refreshShowing(){
+    public void refreshShowing() {
         roomOne.getItems().clear();
         roomTwo.getItems().clear();
         fillTable(roomOne, "Room 1");
@@ -210,13 +207,13 @@ public class MainScene {
     }
 
 
-
     // -- Return the main scene
     public Scene getMainScene() {
         return mainScene;
     }
+
     // set form on main scene
-    public void setForm(GridPane form, String windowMessage){
+    public void setForm(GridPane form, String windowMessage) {
         layoutContainer.getChildren().set(2, form);
         main.setStageTitle(windowMessage);
     }

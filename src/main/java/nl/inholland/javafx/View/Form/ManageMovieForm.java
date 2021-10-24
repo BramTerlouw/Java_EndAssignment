@@ -11,7 +11,7 @@ import nl.inholland.javafx.View.Scene.MainScene;
 
 import java.util.regex.Pattern;
 
-public class ManageMovieForm extends BaseForm{
+public class ManageMovieForm extends BaseForm {
 
     private final TextField txtMovie;
     private final TextField txtPrice;
@@ -50,13 +50,13 @@ public class ManageMovieForm extends BaseForm{
     }
 
     // handle clear button pressed action event
-    private void handleClear(){
+    private void handleClear() {
         this.main.setForm(new BaseForm(main, db).getForm(), "Purchase tickets");
         setOriginalHeaderScene();
     }
 
     // handle add button pressed action event
-    private void handleAdd(){
+    private void handleAdd() {
         if (validateUserInput() && validateUserRegex()) {
             db.insertMovie(new Movie(txtMovie.getText(), Double.parseDouble(txtPrice.getText()),
                     Long.parseLong(txtHours.getText()), Long.parseLong(txtMinutes.getText())));
@@ -66,28 +66,25 @@ public class ManageMovieForm extends BaseForm{
     }
 
     // validate the input values of the user
-    private boolean validateUserRegex(){
+    private boolean validateUserRegex() {
         String decimalPattern = "([0-9]*)\\.([0-9]*)";
-        if (!Pattern.matches(decimalPattern, txtPrice.getText())){
+        if (!Pattern.matches(decimalPattern, txtPrice.getText())) {
             showErrorMessage("Wrong value for price!");
             return false;
-        }
-        else if (!txtHours.getText().matches("[0-9]*")){
+        } else if (!txtHours.getText().matches("[0-9]*")) {
             showErrorMessage("Wrong value for hours!");
             return false;
-        }
-        else if (!txtMinutes.getText().matches("[0-9]*") || Integer.parseInt(txtMinutes.getText()) > 59){
+        } else if (!txtMinutes.getText().matches("[0-9]*") || Integer.parseInt(txtMinutes.getText()) > 59) {
             showErrorMessage("Wrong value for minutes!");
             return false;
-        }
-        else
+        } else
             return true;
     }
 
     // validate the text fields (are all fields filled?)
-    private boolean validateUserInput(){
+    private boolean validateUserInput() {
         if (txtMovie.getText().isEmpty() || txtPrice.getText().isEmpty() || txtHours.getText().isEmpty() ||
-                txtMinutes.getText().isEmpty()){
+                txtMinutes.getText().isEmpty()) {
             showErrorMessage("Not all fields are filled!");
             return false;
         }
@@ -95,7 +92,7 @@ public class ManageMovieForm extends BaseForm{
     }
 
     // create tableview for displaying all movies
-    private TableView createMovieList(){
+    private TableView createMovieList() {
         TableView movies = new TableView();
         movies.getStyleClass().add("movies-table");
         movies.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -105,7 +102,8 @@ public class ManageMovieForm extends BaseForm{
         this.fillTable(movies);
         return movies;
     }
-    private void createTableColumns(TableView table){
+
+    private void createTableColumns(TableView table) {
         TableColumn<Showing, String> col1 = new TableColumn<>("Movie Name");
         col1.setMinWidth(140);
         col1.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -124,10 +122,11 @@ public class ManageMovieForm extends BaseForm{
 
         table.getColumns().addAll(col1, col2, col3, col4);
     }
-    private void fillTable(TableView table){
+
+    private void fillTable(TableView table) {
         Database db = new Database();
         ObservableList<Movie> showings = FXCollections.observableArrayList(db.getMovies());
-        for (Movie movie:showings) {
+        for (Movie movie : showings) {
             table.getItems().add(movie);
         }
     }

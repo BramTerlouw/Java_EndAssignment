@@ -34,8 +34,8 @@ public class BaseForm {
         return form;
     }
 
-    private void setColConstraint(GridPane form, int[] colWidths){
-        for (int width:colWidths) {
+    private void setColConstraint(GridPane form, int[] colWidths) {
+        for (int width : colWidths) {
             ColumnConstraints colConstraint = new ColumnConstraints();
             colConstraint.setMinWidth(width);
             form.getColumnConstraints().add(colConstraint);
@@ -43,16 +43,17 @@ public class BaseForm {
     }
 
     // show error message
-    protected void showErrorMessage(String message){
+    protected void showErrorMessage(String message) {
         JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
+
     // show confirmation message
-    protected void showConfirmationMessage(String message, String title){
+    protected void showConfirmationMessage(String message, String title) {
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
     // set scene header to default header message
-    protected void setOriginalHeaderScene(){
+    protected void setOriginalHeaderScene() {
         this.main.setSceneHeader("Purchase tickets");
     }
 

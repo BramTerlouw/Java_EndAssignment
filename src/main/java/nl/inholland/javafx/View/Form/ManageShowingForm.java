@@ -6,12 +6,13 @@ import nl.inholland.javafx.Model.Theater.Movie;
 import nl.inholland.javafx.Model.Theater.Room;
 import nl.inholland.javafx.Model.Theater.Showing;
 import nl.inholland.javafx.View.Scene.MainScene;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-public class ManageShowingForm extends BaseForm{
+public class ManageShowingForm extends BaseForm {
 
     ComboBox<String> cbMovies;
     ComboBox<String> cbRooms;
@@ -48,8 +49,12 @@ public class ManageShowingForm extends BaseForm{
         cbRooms = new ComboBox<>();
         cbMovies.setMinWidth(145);
         cbRooms.setMinWidth(145);
-        for (Movie m: db.getMovies()) { cbMovies.getItems().add(m.getName()); }
-        for (Room r: db.getRooms()) { cbRooms.getItems().add(r.getName()); }
+        for (Movie m : db.getMovies()) {
+            cbMovies.getItems().add(m.getName());
+        }
+        for (Room r : db.getRooms()) {
+            cbRooms.getItems().add(r.getName());
+        }
         this.setFormListeners();
 
         cbMovies.getSelectionModel().selectFirst();
@@ -81,7 +86,7 @@ public class ManageShowingForm extends BaseForm{
     }
 
     // set listeners on the combo boxes, text field and date picker
-    private void setFormListeners(){
+    private void setFormListeners() {
         cbMovies.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
             db.getMovies().stream().filter(movie -> cbMovies.getValue().equalsIgnoreCase(movie.getName())).findAny()
                     .ifPresent(m -> {
@@ -107,13 +112,13 @@ public class ManageShowingForm extends BaseForm{
     }
 
     // handle clear button pressed action event
-    private void handleClear(){
+    private void handleClear() {
         setOriginalHeaderScene();
         this.main.setForm(new BaseForm(main, db).getForm(), "Purchase tickets");
     }
 
     // handle add button pressed action event
-    private void handleAdd(){
+    private void handleAdd() {
         if (validateInputRegex(true) && validateNewShowingDateTime()) {
             setOriginalHeaderScene();
             db.insertShowing(new Showing(this.movie, this.room, this.getStartMovie()));
@@ -125,7 +130,7 @@ public class ManageShowingForm extends BaseForm{
 
 
     // get start time of movie
-    private LocalDateTime getStartMovie(){
+    private LocalDateTime getStartMovie() {
         LocalDate startDateMovie = dpStart.getValue();
 
         String[] splitInput = txtTime.getText().split(":");
@@ -134,29 +139,24 @@ public class ManageShowingForm extends BaseForm{
     }
 
     // get end time of movie
-    private String getEndMovie(LocalDateTime movieDate, long hours, long minutes){
+    private String getEndMovie(LocalDateTime movieDate, long hours, long minutes) {
         LocalDateTime end = movieDate.plusHours(hours);
         end = end.plusMinutes(minutes);
         return end.toString();
     }
 
 
-
-
     // method is called in the listener
-    private void endDateListenEvent(){
+    private void endDateListenEvent() {
         if (validateInputRegex(false))
             lblEndAnswer.setText(this.getEndMovie(this.getStartMovie(), movie.getDurationHours(), movie.getDurationMinutes()));
     }
 
 
-
-
-
     // Validate the datetime of new and planned showings
-    private boolean validateNewShowingDateTime(){
+    private boolean validateNewShowingDateTime() {
         List<Showing> showings = db.getShowings();
-        for (Showing showing:showings) {
+        for (Showing showing : showings) {
             if (showing.getRoom().equals(room))
                 if (isOverlapping(
                         getStartMovie(),                            // start new showing
@@ -173,21 +173,21 @@ public class ManageShowingForm extends BaseForm{
 
     // if showings overlap, return true
     private boolean isOverlapping(LocalDateTime startNewShowing, LocalDateTime endNewShowing,
-                                  LocalDateTime startOldShowing, LocalDateTime endOldShowing){
+                                  LocalDateTime startOldShowing, LocalDateTime endOldShowing) {
         // return true if start new showing not after end old showing && start old showing not after end new showing
         return !startNewShowing.isAfter(endOldShowing) && !startOldShowing.isAfter(endNewShowing);
     }
 
     // validate user input values
-    private boolean validateInputRegex(boolean showError){
-        if (!txtTime.getText().matches("\\d{2}:\\d{2}")){
+    private boolean validateInputRegex(boolean showError) {
+        if (!txtTime.getText().matches("\\d{2}:\\d{2}")) {
             if (showError)
                 showErrorMessage("Make sure you use the correct time format! (hh:mm)");
             return false;
         }
 
         String[] startTime = txtTime.getText().split(":");
-        if (Integer.parseInt(startTime[0]) > 23 || Integer.parseInt(startTime[1]) > 59){
+        if (Integer.parseInt(startTime[0]) > 23 || Integer.parseInt(startTime[1]) > 59) {
             if (showError)
                 showErrorMessage("Make sure you use correct values for hours (00 - 23) and minutes (00 - 59)");
             return false;

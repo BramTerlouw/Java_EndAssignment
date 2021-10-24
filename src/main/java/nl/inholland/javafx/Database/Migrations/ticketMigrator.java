@@ -1,7 +1,5 @@
 package nl.inholland.javafx.Database.Migrations;
 
-import nl.inholland.javafx.Model.Theater.Movie;
-import nl.inholland.javafx.Model.Theater.Room;
 import nl.inholland.javafx.Model.Theater.Showing;
 import nl.inholland.javafx.Model.Theater.Ticket;
 
@@ -10,7 +8,7 @@ import java.util.List;
 
 public class ticketMigrator {
 
-    public List<Ticket> createTickets(List<Showing> showings){
+    public List<Ticket> createTickets(List<Showing> showings) {
         List<Ticket> tickets = new ArrayList<>();
 
         // make tickets

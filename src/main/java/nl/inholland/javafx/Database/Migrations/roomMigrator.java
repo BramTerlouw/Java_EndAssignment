@@ -1,12 +1,13 @@
 package nl.inholland.javafx.Database.Migrations;
+
 import nl.inholland.javafx.Model.Theater.Room;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class roomMigrator{
+public class roomMigrator {
 
-    public List<Room> createRooms(){
+    public List<Room> createRooms() {
         List<Room> rooms = new ArrayList<>();
 
         // make rooms

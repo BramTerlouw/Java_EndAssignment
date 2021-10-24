@@ -31,7 +31,7 @@ public class LoginScene {
         this.loginScene = new Scene(layout);
     }
 
-    private GridPane createLogin(){
+    private GridPane createLogin() {
         GridPane loginGrid = new GridPane();
         loginGrid.setAlignment(Pos.CENTER);
         loginGrid.setVgap(10);
@@ -58,11 +58,10 @@ public class LoginScene {
         return loginGrid;
     }
 
-    private void handleLogin(){
-        for (Person person: db.getUsers()){
+    private void handleLogin() {
+        for (Person person : db.getUsers()) {
             if (person.getUserName().equalsIgnoreCase(txtUserName.getText())
-                    && Objects.equals(person.getPassword(), pwPassword.getText()))
-            {
+                    && Objects.equals(person.getPassword(), pwPassword.getText())) {
                 performLogin(person);
                 return;
             }
@@ -71,7 +70,7 @@ public class LoginScene {
         JOptionPane.showMessageDialog(null, "Wrong credentials!", "Error", JOptionPane.ERROR_MESSAGE);
     }
 
-    private void performLogin(Person person){
+    private void performLogin(Person person) {
         new Main(person, db).getWindow().show();
         this.login.close();
     }

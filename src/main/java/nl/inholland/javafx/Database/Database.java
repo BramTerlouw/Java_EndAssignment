@@ -6,6 +6,7 @@ import nl.inholland.javafx.Model.Theater.Movie;
 import nl.inholland.javafx.Model.Theater.Room;
 import nl.inholland.javafx.Model.Theater.Showing;
 import nl.inholland.javafx.Model.Theater.Ticket;
+
 import java.util.List;
 
 public class Database {
@@ -25,20 +26,39 @@ public class Database {
     }
 
     // methods for modifying data
-    public void insertShowing(Showing showing){
+    public void insertShowing(Showing showing) {
         showings.add(showing);
     }
-    public void insertMovie(Movie movie){
+
+    public void insertMovie(Movie movie) {
         movies.add(movie);
     }
-    public void addTicket(Ticket ticket){tickets.add(ticket); }
-    public int getNrOfTickets(){return tickets.size(); }
+
+    public void addTicket(Ticket ticket) {
+        tickets.add(ticket);
+    }
+
+    public int getNrOfTickets() {
+        return tickets.size();
+    }
 
     // getters
-    public List<Person> getUsers() { return users; }
-    public List<Movie> getMovies() { return movies; }
-    public List<Room> getRooms() {return rooms; }
-    public List<Showing> getShowings() {return showings; }
+    public List<Person> getUsers() {
+        return users;
+    }
+
+    public List<Movie> getMovies() {
+        return movies;
+    }
+
+    public List<Room> getRooms() {
+        return rooms;
+    }
+
+    public List<Showing> getShowings() {
+        return showings;
+    }
+
     public List<Ticket> getTickets() {
         return tickets;
     }
